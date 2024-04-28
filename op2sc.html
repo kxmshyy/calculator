@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Scientific Calculator</title>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+      background-image: url('bgb.jpg');
+      background-attachment: fixed;
+      background-repeat: no-repeat; /* Prevent background image from repeating */
+      background-size: cover;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .side-menu {
+      position: fixed;
+      left: 20px;
+      top: 20px;
+      height: 600px;
+      width: 250px;
+      background-color: rgba(0, 0, 0, 0.8); /* Dark grey background */
+      font-family: Arial black;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    }
+
+    .side-menu h2 {
+      margin-left: 20px;
+      margin-bottom: 5px;
+      color: #474747; /* White text color */
+    }
+
+    .side-menu h2::after {
+      content: '';
+      display: block;
+      width: 90%;
+      align-items: center;
+      border-bottom: 1px solid #ffffff; /* White border bottom */
+      margin-bottom: 10px;
+    }
+
+    .side-menu a {
+      margin-left: 40px;
+      color: #b9b9b9; /* White text color */
+      font-size: 18px;
+      text-decoration: none;
+    }
+
+    .calculator {
+      width: 90%;
+      max-width: 400px;
+      padding: 20px;
+      border-radius: 20px;
+      background-image: url('smoke.jpg');
+      background-position: center;
+      background-size: cover;
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+    }
+
+    input[type="text"] {
+      width: calc(95% - 40px);
+      height: 90px;
+      margin-bottom: 20px;
+      padding: 30px;
+      font-size: 48px;
+      border: none;
+      border-radius: 10px;
+      background-color: #666666; /* Grey background */
+      text-align: right;
+      box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.1);
+      outline: none;
+      white-space: nowrap;
+      overflow-x: auto;
+      transition: all 0.3s ease;
+      color: #ffffff; /* White text color */
+    }
+
+    input[type="button"] {
+  width: 20%; /* Adjust the width of the buttons */
+  height: 60px; /* Adjust the height of the buttons */
+  margin: 3px;
+  margin-bottom: 1px;
+  margin-right: 15px;
+  margin-left: 15px;
+  font-size: 24px;
+  cursor: pointer;
+  border: 1px solid #ffffff;
+  border-radius: 50px;
+  background-color: #333333;
+  color: #ffffff;
+  transition: all 0.3s ease;
+}
+
+    input[type="button"]:hover {
+      background-color: #555555;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      transform: translateY(-2px);
+    }
+
+    .special-button {
+      background-color: #444444;
+      color: #000000;
+    }
+
+    #history {
+      display: none;
+      width: 93%;
+      padding: 10px;
+      border: none;
+      border-radius: 10px;
+      background-color: #555555; /* Dark grey background for history */
+      box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.1);
+      margin-bottom: 10px;
+      resize: none;
+      overflow-y: auto;
+      max-height: 100px;
+      font-size: 16px;
+      color: #ffffff; /* White text color */
+    }
+
+    @media (min-width: 768px) {
+      .calculator {
+        width: 400px;
+      }
+      input[type="button"] {
+        width: 66px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="side-menu">
+    <h1 style="margin-left: 30px; color: #ffffff; font-size: 35px; margin-top: 10px;">CalcuHub</h1>
+    <h2>Menu</h2>
+    <a href="index.html">Home</a>
+
+    <h2>Calculator</h2>
+    <a href="op2s.html">Standard</a>
+    <a href="op2sc.html">Scientific</a>
+
+    <h2>Theme</h2>
+    <a href="sci.html">Option 1</a>
+    <br>
+    <a href="op2sc.html">Option 2</a>
+    <br>
+    <a href="op3sc.html">Option 3</a>
+
+    <h2>About Us</h2>
+    <p style="font-size: 11.5px; font-family: Century Gothic; margin-left: 25px; margin-right: 25px; color: #b9b9b9; font-weight: bold;"> Kim, the creative mind behind this calculator. With a background in <br> WebDev,
+      Kim crafted this tool to <br> blend functionality with aesthetics. 
+      Kim's goal? To simplify math for  everyone, from basic arithmetic  to complex calculations.</p>
+  </div>
+
+  <div class="calculator">
+    <input type="text" id="display" readonly oninput="handleInput()">
+    <button onclick="toggleHistory()" style="border: none; background: none; cursor: pointer;"> <!-- Changed button to regular button -->
+      <img src="his.png" alt="History" style="width: 23px; height: 20px; margin-top: 20px;  margin-left: 10px;"> <!-- Insert your image path and adjust width and height -->
+    </button>
+    <div id="history"></div>
+    <div>
+      <input type="button" value="C" style="background-color: #555555;"  onclick="clearDisplay()">
+      <input type="button" value="CE" style="background-color: #555555;" onclick="backspace()">
+      <input type="button" class="special-button" value="%" style="background-color: #555555;" onclick="calculatePercent()">
+      <input type="button" value="÷" style="background-color: #333333;" onclick="appendToDisplay('÷')">
+    </div>
+    <div>
+      <input type="button" value="7" onclick="appendToDisplay('7')">
+      <input type="button" value="8" onclick="appendToDisplay('8')">
+      <input type="button" value="9" onclick="appendToDisplay('9')">
+      <input type="button" value="×" style="background-color: #333333;" onclick="appendToDisplay('×')">
+    </div>
+    <div>
+      <input type="button" value="4" onclick="appendToDisplay('4')">
+      <input type="button" value="5" onclick="appendToDisplay('5')">
+      <input type="button" value="6" onclick="appendToDisplay('6')">
+      <input type="button" value="-" style="background-color: #333333;" onclick="appendToDisplay('-')">
+    </div>
+    <div>
+      <input type="button" value="1" onclick="appendToDisplay('1')">
+      <input type="button" value="2" onclick="appendToDisplay('2')">
+      <input type="button" value="3" onclick="appendToDisplay('3')">
+      <input type="button" value="+" style="background-color: #333333;" onclick="appendToDisplay('+')">
+    </div>
+    <div>
+      <input type="button" value="00" onclick="appendToDisplay('00')">
+      <input type="button" value="0"  onclick="appendToDisplay('0')">
+      <input type="button" value="." onclick="appendToDisplay('.')"> <!-- Added decimal point button -->
+      <input type="button" class="special-button" value="=" style="background-color: #333333;" onclick="calculate()">
+    </div>
+    <div>
+      <input type="button" value="sin" onclick="trigFunction('sin')">
+      <input type="button" value="cos" onclick="trigFunction('cos')">
+      <input type="button" value="tan" onclick="trigFunction('tan')">
+      <input type="button" value="π" onclick="appendToDisplay('π')">
+    </div>
+    <!-- Add more buttons for other scientific functions -->
+  </div>
+
+  <script>
+    function appendToDisplay(value) {
+      document.getElementById("display").value += value;
+    }
+
+    document.addEventListener("keydown", function(event) {
+      // Get the key pressed
+      var key = event.key;
+      
+      // Check if the key is a number or one of the operation symbols
+      if (!isNaN(key) || "+-*/".includes(key)) {
+        appendToDisplay(key); // Append the key to the display
+      } else if (key === "Enter") {
+        calculate(); // If Enter key is pressed, calculate the result
+      } else if (key === "Backspace") {
+        backspace(); // If Backspace key is pressed, remove the last character from the display
+      }
+    });
+
+    function clearDisplay() {
+      document.getElementById("display").value = "";
+    }
+
+    function backspace() {
+      var display = document.getElementById("display");
+      display.value = display.value.slice(0, -1);
+    }
+
+    function calculate() {
+  var expression = document.getElementById("display").value.replace(/,/g, '');
+  // Replace displayed division symbol "÷" with actual division symbol "/"
+  expression = expression.replace(/÷/g, '/');
+  // Replace displayed multiplication symbol "×" with actual multiplication symbol "*"
+  expression = expression.replace(/×/g, '*');
+  expression = expression.replace(/π/g, Math.PI);
+
+  try {
+    var result = eval(expression);
+    document.getElementById("display").value = formatNumber(result);
+    document.getElementById("history").innerHTML += expression + " = " + formatNumber(result) + "<br>";
+  } catch (error) {
+    document.getElementById("display").value = "Error";
+  }
+}
+
+function trigFunction(func) {
+  var display = document.getElementById("display");
+  var value = parseFloat(display.value);
+  
+  if (!isNaN(value)) {
+    // Convert degrees to radians if necessary
+    if (document.getElementById("mode").value === "deg") {
+      value = value * (Math.PI / 180);
+    }
+    
+    switch (func) {
+      case 'sin':
+        display.value = Math.sin(value);
+        break;
+      case 'cos':
+        display.value = Math.cos(value);
+        break;
+      case 'tan':
+        display.value = Math.tan(value);
+        break;
+      // Add more cases for other trigonometric functions if needed
+    }
+  } else {
+    display.value = "Error";
+  }
+}
+
+
+    function calculatePercent() {
+      var expression = document.getElementById("display").value.replace(/,/g, '');
+      try {
+        var result = eval(expression) / 100;
+        document.getElementById("display").value = formatNumber(result);
+      } catch (error) {
+        document.getElementById("display").value = "Error";
+      }
+    }
+
+    function toggleHistory() {
+      var history = document.getElementById("history");
+      if (history.style.display === "none") {
+        history.style.display = "block";
+      } else {
+        history.style.display = "none";
+      }
+    }
+
+    function formatNumber(number) {
+      if (Math.abs(number) >= 1000) {
+        return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+      } else {
+        return number;
+      }
+    }
+
+    function handleInput() {
+      var display = document.getElementById("display");
+      var currentValue = display.value;
+      if (currentValue.indexOf(',') !== -1) {
+        display.value = currentValue.replace(/,/g, '');
+      }
+    }
+
+    function trigFunction(func) {
+      var display = document.getElementById("display");
+      var value = parseFloat(display.value);
+      if (!isNaN(value)) {
+        switch (func) {
+          case 'sin':
+            display.value = Math.sin(value);
+            break;
+          case 'cos':
+            display.value = Math.cos(value);
+            break;
+          case 'tan':
+            display.value = Math.tan(value);
+            break;
+          // Add more cases for other trigonometric functions if needed
+        }
+      } else {
+        display.value = "Error";
+      }
+    }
+  </script>
+</body>
+</html>
